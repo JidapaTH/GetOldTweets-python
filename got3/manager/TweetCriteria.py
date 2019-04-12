@@ -10,7 +10,9 @@ class TweetCriteria:
 	def setSince(self, since):
 		self.since = since
 		return self
-
+	def setCite(self, cite):
+		self.cite = cite
+		return self
 	def setUntil(self, until):
 		self.until = until
 		return self

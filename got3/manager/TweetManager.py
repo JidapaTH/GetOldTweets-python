@@ -54,6 +54,12 @@ class TweetManager:
 						urls.append((link.attrib["data-expanded-url"]))
 					except KeyError:
 						pass
+				emojis = []
+				for emoji in tweetPQ("p.js-tweet-text img"):
+					try:
+						emojis.append(emoji.attrib["alt"])
+					except KeyError:
+						pass
 				tweet.id = id
 				tweet.permalink = 'https://twitter.com' + permalink
 				tweet.username = usernameTweet
@@ -66,9 +72,20 @@ class TweetManager:
 				tweet.mentions = " ".join(re.compile('(@\\w*)').findall(tweet.text))
 				tweet.hashtags = " ".join(re.compile('(#\\w*)').findall(tweet.text))
 				tweet.geo = geo
+				tweet.emojis = " ".join(emojis)
 				tweet.urls = ",".join(urls)
 				tweet.author_id = user_id
-				
+				tweet.isReply = tweetPQ("div.ReplyingToContextBelowAuthor").is_("div")
+				if tweet.isReply:
+					tweet.replyTo = tweetPQ("div.ReplyingToContextBelowAuthor span.username b").contents()[0]
+				else:
+					tweet.replyTo = ''
+				emojis = []
+				for emoji in tweetPQ("p.js-tweet-text img"):
+					try:
+						emojis.append(emoji.attrib["alt"])
+					except KeyError:
+						pass
 				results.append(tweet)
 				resultsAux.append(tweet)
 				
@@ -93,6 +110,8 @@ class TweetManager:
 		urlGetData = ''
 		if hasattr(tweetCriteria, 'username'):
 			urlGetData += ' from:' + tweetCriteria.username
+		if hasattr(tweetCriteria, 'cite'):
+			urlGetData += ' to:' + tweetCriteria.cite
 			
 		if hasattr(tweetCriteria, 'since'):
 			urlGetData += ' since:' + tweetCriteria.since
