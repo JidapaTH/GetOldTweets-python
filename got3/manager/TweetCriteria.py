@@ -7,6 +7,7 @@ class TweetCriteria:
 		self.username = username
 		return self
 
+    
 	def setSince(self, since):
 		self.since = since
 		return self
@@ -16,7 +17,8 @@ class TweetCriteria:
 	def setUntil(self, until):
 		self.until = until
 		return self
-
+	def getUntil(self):
+		return self.until
 	def setQuerySearch(self, querySearch):
 		self.querySearch = querySearch
 		return self

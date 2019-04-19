@@ -81,6 +81,7 @@ class TweetManager:
 				else:
 					tweet.replyTo = ''
 				emojis = []
+				tweet.origin = tweetPQ.attr('data-conversation-id')
 				for emoji in tweetPQ("p.js-tweet-text img"):
 					try:
 						emojis.append(emoji.attrib["alt"])
